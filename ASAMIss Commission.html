@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ASAMIss Commission</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fff1f6;--bg2:#fff;--card:rgba(255,255,255,.88);--pk:#fee0e9;--pk2:#f5c9d4;--gr1:#c7dd9d;--gr:#8da65c;--tx:#4e4a4c;--mut:#8a8386;--line:#f0d3dc;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#2a2226;--bg2:#1f1a1d;--card:rgba(50,40,45,.9);--pk:#4a3540;--pk2:#7a4c5c;--gr1:#5c7040;--gr:#a9c477;--tx:#f3e8ec;--mut:#b9a9b0;--line:#54404a}}
+:root[data-theme="dark"]{--bg:#2a2226;--bg2:#1f1a1d;--card:rgba(50,40,45,.9);--pk:#4a3540;--pk2:#7a4c5c;--gr1:#5c7040;--gr:#a9c477;--tx:#f3e8ec;--mut:#b9a9b0;--line:#54404a}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;font-family:"Noto Sans Thai","Sarabun",system-ui,sans-serif;color:var(--tx);background:linear-gradient(180deg,var(--bg),var(--bg2));min-height:100vh;line-height:1.6}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--card);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);display:flex;align-items:center;padding:8px 14px;gap:10px}
+.logo{font-weight:600;color:var(--gr);white-space:nowrap}
+nav{flex:1;display:flex;justify-content:center;gap:4px;flex-wrap:wrap}
+nav button{border:0;background:none;color:var(--tx);font:inherit;padding:6px 14px;border-radius:99px;cursor:pointer}
+nav button.on{background:var(--pk2);color:#5a2b3a}
+.lang{display:flex;border:1px solid var(--line);border-radius:99px;overflow:hidden}
+.lang button{border:0;background:none;color:var(--tx);font:inherit;font-size:13px;padding:4px 10px;cursor:pointer}
+.lang button.on{background:var(--gr);color:#fff}
+main{position:relative;z-index:1;max-width:980px;margin:0 auto;padding:20px 14px 60px}
+.page{display:none}.page.on{display:block}
+h1,h2,h3{font-weight:600;margin:.4em 0}h2{color:var(--gr)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:28px;padding:20px;margin:14px 0;box-shadow:0 4px 18px rgba(245,201,212,.3)}
+.slider{overflow:hidden;border-radius:18px;background:var(--pk);border:2px dashed var(--pk2);min-height:min(62vw,520px);position:relative}
+.track{display:flex;gap:10px;width:max-content;animation:slide var(--d,30s) linear infinite}
+@keyframes slide{to{transform:translateX(-50%)}}
+.track img{height:min(62vw,520px);width:auto;border-radius:12px;display:block}
+.ph{display:flex;align-items:center;justify-content:center;min-height:min(62vw,520px);color:var(--mut);text-align:center;padding:10px}
+input[type=password],input[type=number]{font:inherit;padding:8px 12px;border-radius:12px;border:1px solid var(--pk2);background:var(--bg2);color:var(--tx);width:100%}
+#ap .g{display:grid;grid-template-columns:1fr 110px;gap:4px 10px;align-items:center;margin-bottom:12px}
+.own{display:none;gap:8px;margin:8px 0;flex-wrap:wrap;font-size:13px}.isown .own{display:flex}
+.btn,label.btn{display:inline-block;border:0;background:var(--gr);color:#fff;border-radius:99px;padding:8px 18px;font:inherit;cursor:pointer;text-decoration:none}
+.btn.sec{background:var(--pk2);color:#5a2b3a}
+.mail{text-align:center;margin:18px 0;font-size:1.1rem}.mail a{color:var(--gr);font-weight:600}
+.links{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.links a{display:block;background:var(--pk);border-radius:16px;padding:16px;text-align:center;color:var(--tx);text-decoration:none;font-weight:500;border:1px solid var(--pk2);transition:.2s}
+.links a:hover{transform:translateY(-3px);background:var(--pk2)}
+ul{padding-left:20px}li{margin:4px 0}
+.steps li::marker{color:var(--gr);font-weight:600}
+.pay{display:flex;flex-wrap:wrap;gap:8px}.pay span{background:var(--gr1);color:#37461f;border-radius:99px;padding:4px 14px;font-size:14px}
+.calc{display:grid;grid-template-columns:1fr 320px;gap:16px;align-items:start}
+@media(max-width:800px){.calc{grid-template-columns:1fr}.recv{position:static!important}}
+.recv{position:sticky;top:calc(env(safe-area-inset-top,0px) + 64px);border:2px dashed var(--pk2)}
+.opt{display:flex;justify-content:space-between;gap:8px;padding:8px 10px;border-radius:10px;cursor:pointer;border:1px solid transparent}
+.opt:hover{background:var(--pk)}.opt input{accent-color:#e58fa9;margin-right:8px}
+.opt.sel{background:var(--pk);border-color:var(--pk2)}
+.ex{width:100%;max-height:240px;object-fit:cover;border-radius:12px;margin-bottom:8px;display:block}
+.exph{background:var(--pk);border:2px dashed var(--pk2);border-radius:12px;height:110px;display:flex;align-items:center;justify-content:center;color:var(--mut);margin-bottom:8px;font-size:14px}
+.row{display:flex;justify-content:space-between;gap:8px;font-size:14px;border-bottom:1px dotted var(--line);padding:3px 0}
+.tot{display:flex;justify-content:space-between;font-size:1.3rem;font-weight:600;color:var(--gr);margin-top:10px}
+small,.note{color:var(--mut);font-size:12px}
+input[type=text],textarea{width:100%;font:inherit;padding:8px 12px;border-radius:12px;border:1px solid var(--pk2);background:var(--bg2);color:var(--tx)}
+.stars{font-size:32px;cursor:pointer;color:#ddc;user-select:none}.stars b{font-weight:400}.stars b.on{color:#f4b942}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.chip{border:1px solid var(--pk2);border-radius:99px;padding:4px 12px;cursor:pointer;font-size:14px}
+.chip input{display:none}.chip:has(input:checked){background:var(--gr);color:#fff;border-color:var(--gr)}
+.rv img{max-width:220px;border-radius:10px;display:block;margin-top:6px}
+.rv .tg span{background:var(--gr1);color:#37461f;border-radius:99px;padding:1px 10px;font-size:12px;margin-right:4px}
+#petals{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+.p{position:absolute;top:-40px;animation:fall linear infinite;opacity:.95;filter:drop-shadow(0 1px 2px rgba(200,140,160,.35))}
+@keyframes fall{to{transform:translate(var(--dx),110vh) rotate(var(--r))}}
+.car{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:8px;border-radius:14px;margin-bottom:6px;-webkit-overflow-scrolling:touch}
+.car img{flex:0 0 100%;width:100%;max-height:320px;object-fit:cover;scroll-snap-align:center;border-radius:14px}
+.th{position:relative;display:inline-block;margin:0 8px 8px 0}.th img{width:72px;height:72px;object-fit:cover;border-radius:10px;display:block}
+.th button{position:absolute;top:-6px;right:-6px;width:22px;height:22px;border-radius:50%;border:0;background:#d4687a;color:#fff;cursor:pointer;line-height:1}
+.avt{width:44px;height:44px;border-radius:50%;background:var(--pk);border:2px solid var(--pk2);display:flex;align-items:center;justify-content:center;font-size:26px;flex:none}
+.avs{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 10px}.avs button{width:44px;height:44px;border-radius:50%;border:2px solid var(--pk2);background:var(--bg2);font-size:24px;cursor:pointer;padding:0}.avs button.on{background:var(--gr1);border-color:var(--gr)}
+.cw{position:relative}.cb{position:absolute;top:50%;transform:translateY(-50%);width:38px;height:38px;border-radius:50%;border:0;background:rgba(255,255,255,.88);color:#5a2b3a;font-size:24px;line-height:1;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.2)}.cb.l{left:8px}.cb.r{right:8px}
+.gg{columns:3 220px;column-gap:10px}.gg img{width:100%;display:block;margin-bottom:10px;border-radius:14px;cursor:zoom-in;break-inside:avoid}
+</style>
+</head>
+<body>
+<div id="petals"></div>
+<div id="lb" onclick="this.style.display='none'" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:50;align-items:center;justify-content:center;padding:10px"><img id="lbi" alt="" style="max-width:96vw;max-height:92vh;border-radius:12px"></div>
+<svg width="0" height="0" style="position:absolute"><defs><symbol id="sk" viewBox="-50 -50 100 100"><circle r="42" fill="#fff" stroke="#ecc6d2" stroke-width="3"/></symbol></defs></svg>
+
+<header>
+  <div class="logo">ASAMIss</div>
+  <nav id="nav"></nav>
+  <div class="lang"><button data-l="th" class="on">TH</button><button data-l="en">EN</button></div>
+</header>
+
+<main id="main">
+<section class="page on" id="p-home">
+    <div class="slider" id="s-home"></div>
+  <div class="mail"><span data-t="contact"></span> <a id="em" href="mailto:cms.asamiss@gmail.com">cms.asamiss@gmail.com</a></div>
+  <div class="links">
+    <a target="_blank" rel="noopener" href="https://www.canva.com/design/DAHP7FB3lrE/BkD2MNNZJ71tFXJk3r3gSg/view?utm_content=DAHP7FB3lrE&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h0eaacd883b"><span data-t="l1"></span></a>
+    <a target="_blank" rel="noopener" href="https://docs.google.com/spreadsheets/d/1krZA2R7PfogYrnqVUO5JFdGvklE0WYibOMhwGBP9XDk/edit?usp=sharing"><span data-t="l2"></span></a>
+    <a target="_blank" rel="noopener" href="https://canva.link/a3ug89gsxdi6j5u"><span data-t="l3"></span></a>
+  </div>
+</section>
+
+<section class="page" id="p-detail">
+  <div class="card"><h2 data-t="tos"></h2><ul id="tosL"></ul></div>
+  <div class="card"><h2 data-t="flow"></h2><ol class="steps" id="stepL"></ol></div>
+  <div class="card"><h2 data-t="payh"></h2><div class="pay" id="payL"></div></div>
+</section>
+
+<section class="page" id="p-types">
+  <div class="calc">
+    <div id="opts"></div>
+    <aside class="card recv">
+      <h3><span data-t="calc"></span></h3>
+      <div id="rcpt"></div>
+      <div class="tot"><span data-t="total"></span><span id="tot">0</span></div>
+      <button class="btn sec" id="reset" style="margin-top:10px;width:100%" data-t="reset"></button>
+      <p class="note" data-t="note"></p>
+    </aside>
+  </div>
+</section>
+
+<section class="page" id="p-gal"><div id="gal"></div></section>
+
+<section class="page" id="p-rev">
+    <div class="slider" id="s-rev"></div>
+  <div class="card">
+    <h2 data-t="rvh"></h2>
+    <div class="note" data-t="avh"></div><div class="avs" id="av"></div>
+    <input type="text" id="rn" maxlength="40" data-p="name">
+    <label class="chip" style="display:inline-block;margin:8px 0"><input type="checkbox" id="ra"><span data-t="anon"></span></label>
+    <div class="stars" id="st"><b>★</b><b>★</b><b>★</b><b>★</b><b>★</b></div>
+    <div class="chips" id="tags"></div>
+    <textarea id="rt" rows="3" maxlength="500" data-p="msg"></textarea>
+    <p><label class="btn sec"><span data-t="att"></span><input type="file" id="rf" accept="image/*" hidden></label> <small id="rfn"></small></p>
+    <button class="btn" id="rs" data-t="send"></button> <small id="rm"></small>
+  </div>
+  <div id="rlist"></div>
+</section>
+<p style="text-align:center;margin-top:30px"><a href="#" id="adm" class="note">Admin</a></p>
+<section class="page" id="p-admin">
+ <div class="card" id="login"><h2>Admin / หลังบ้าน</h2><input type="password" id="pw" placeholder="Password"><p><button class="btn" id="lg">Login</button> <button class="btn sec" id="bk">Back</button> <small id="lm"></small></p></div>
+ <div class="card" id="editor" style="display:none"><h2>Admin / หลังบ้าน</h2>
+  <h3>Images / รูปภาพ</h3><div id="ai"></div><hr style="border:0;border-top:1px solid var(--line);margin:16px 0">
+  <p>Email<input type="text" id="ae"></p>
+  <p>Terms TH (1 line = 1 item)<textarea id="a1" rows="8"></textarea></p>
+  <p>Terms EN<textarea id="a2" rows="8"></textarea></p>
+  <p>Steps TH<textarea id="a3" rows="5"></textarea></p>
+  <p>Steps EN<textarea id="a4" rows="5"></textarea></p>
+  <p>Payment methods<textarea id="a5" rows="4"></textarea></p>
+  <div id="ap"></div>
+  <p><button class="btn" id="sv">Save</button> <button class="btn sec" id="lo">Logout</button> <small id="am"></small></p>
+ </div>
+</section>
+</main>
+
+<script>
+const RATE=33; // 1 USD ≈ 33 THB (แก้ตัวเลขนี้ได้)
+const T={th:{
+ nav:["หน้าแรก","รายละเอียด","ประเภทคอมมิชชั่น","ตัวอย่างผลงาน","รีวิว"],contact:"ติดต่อ:",l1:"ช่องทางการติดตามผลงาน",l2:"สถานะคิว",l3:"ตัวอย่างแบบฟอร์ม Brief Commission",
+ addImg:"เพิ่มรูป",clearImg:"ลบรูปทั้งหมด",empty:"พื้นที่สำหรับรูปภาพ",
+ tos:"Term of service",flow:"ขั้นตอนการทำงาน",payh:"ช่องทางการชำระเงิน",
+ tosL:["งานทุกชิ้นมีการใช้ 3D เข้ามาช่วย","สไตล์งานของเราจะค่อนข้างรกและไม่เป็นระเบียบ","1 งาน แก้ได้ไม่เกิน 2 ครั้ง หากมากกว่านั้นจะมีค่าใช้จ่ายเพิ่มเติมจุดละ 50+ (ราคาขึ้นอยู่กับรายละเอียดในการแก้ไข)","ชำระเงินก่อนเริ่มงาน กรณีที่ยอดเกิน 500 สามารถมัดจำ 50% ก่อนเริ่มงาน และอีก 50% เมื่อคอนเฟิร์มเส้นร่าง","ผลงานทุกอย่างจะถูกนำไปใส่ลงพอร์ตสาธารณะโดยจะติดลายน้ำเอาไว้ หากไม่ต้องการให้เผยแพร่ (หรือมีกำหนดการปล่อยงาน) กรุณาแจ้งก่อนเสมอ","เมื่อชำระเงินและเริ่มงานไปแล้ว จะไม่มีการคืนเงินเต็มจำนวนทุกกรณี หากต้องการยกเลิก จะไม่สามารถคืนมัดจำได้","งานเชิงพาณิชย์ คิดราคา x2 จากราคางาน","นักวาดสามารถปฏิเสธการรับคอมมิชชั่นหากคำขอไม่เหมาะสมกับสไตล์งานของนักวาด","ห้ามนำผลงานไปใช้สำหรับการสร้างภาพเทรน AI","ไม่รับงานที่มีรายละเอียดเยอะ หากไม่แน่ใจสามารถสอบถามได้ค่ะ"],
+ stepL:["ทักมาทางข้อความเพื่อติดต่อสอบถามและจองคิว","หลังจากบรีฟงานละเอียดแล้ว จะส่งรายละเอียดราคาให้","ราคางานต่ำกว่า 500 โอนราคาเต็มก่อนเริ่มงาน — ราคางานมากกว่า 500+ สามารถโอนมัดจำครึ่งนึงก่อนเริ่มงาน และอีกครึ่งโอนได้ก่อนลงสี","เริ่มส่งเส้นร่างให้ แก้งานได้ 2 ครั้งต่อ 1 งาน ครั้งต่อไปคิดจุดละ 50+ ตามความเหมาะสม","ส่งงานไฟนอล หากไม่มีตรงไหนแก้แล้วจะส่งงานเสร็จสมบูรณ์ทางอีเมล"],
+ calc:"คำนวณราคา",total:"ราคารวม",reset:"ยกเลิกที่เลือกทั้งหมด",note:"ราคานี้เป็นเพียงการคำนวณคร่าวๆ โปรดสอบถามราคาจากนักวาดอีกครั้ง",none:"ยังไม่ได้เลือก",
+ use:"ประเภทการใช้งาน",chars:"จำนวนตัวละคร",img:"ภาพตัวอย่าง",
+ personal:"ส่วนตัว",comm:"เชิงพาณิชย์ x2",
+ rvh:"รีวิวจากลูกค้า",name:"ชื่อของคุณ",anon:"ไม่ต้องการระบุชื่อ",msg:"เขียนข้อความประทับใจ (ไม่บังคับ)",att:"แนบรูปคอมมิชชั่น (ไม่บังคับ)",send:"ส่งรีวิว",
+ tags:["ส่งงานตรงเวลา","ตอบไว","งานไม่มีปัญหา","ประทับใจ"],needStar:"กรุณาให้ดาว",thanks:"ขอบคุณสำหรับรีวิวค่ะ",noRv:"ยังไม่มีรีวิว",anonN:"ไม่ระบุชื่อ",
+ sec:{rc:"Rough sketch + Color (เส้นรัฟ+สี)",bw:"B/W Sketch (เส้นรัฟขาวดำ)",fr:"Full render (ตัดเส้น)",ad:"Add-on (อื่นๆ)"},
+ sz:["จิบิ ครึ่งตัว","จิบิ เต็มตัว","หัว-ไหล่","หัว-อก","ครึ่งตัว","เต็มตัว"],
+ add:["พื้นหลังแบบง่าย เช่น ดอกไม้ ฉากในห้องเรียบๆ","พื้นหลังซับซ้อน เช่น ทะเล ตึก ห้องที่มีเฟอร์นิเจอร์เยอะ","ตัวละครมีปีก","มีสัตว์เลี้ยง"],cur:"฿",del:"ลบ",avh:"เลือกโปรไฟล์",swipe:"เลื่อนดูรูปเพิ่มเติม"},
+en:{
+ nav:["Home","Details","Commission Types","Portfolio","Reviews"],contact:"Contact:",l1:"Portfolio & socials",l2:"Queue status",l3:"Commission brief form example",
+ addImg:"Add images",clearImg:"Remove all images",empty:"Image area",
+ tos:"Terms of Service",flow:"Workflow",payh:"Payment methods",
+ tosL:["All artworks are made with the help of 3D.","My style is rather busy and messy.","Up to 2 revisions per piece. Additional revisions cost 50+ THB per point (depends on the detail of the change).","Payment is required before starting. For orders over 500 THB, you may pay a 50% deposit first and the other 50% once the sketch is confirmed.","All works may be posted in the public portfolio with a watermark. If you don't want it shared (or need a release date), please tell me first.","Once payment is made and work has begun, no full refunds in any case. If you cancel, the deposit is non-refundable.","Commercial use is charged x2 of the artwork price.","The artist may decline a commission that doesn't suit the artist's style.","Do not use the artworks to train AI.","Highly detailed requests are not accepted. If unsure, feel free to ask!"],
+ stepL:["Message me to inquire and book a slot.","After the detailed brief, I'll send you the price details.","Under 500 THB: pay in full before starting. Over 500 THB: pay a half deposit before starting and the other half before coloring.","I'll send the sketch. 2 revisions per piece; additional ones cost 50+ THB per point as appropriate.","Final delivery. If nothing needs changing, the finished work is sent by email."],
+ calc:"Price calculator",total:"Total",reset:"Clear all selections",note:"This price is only a rough estimate. Please confirm the final price with the artist.",none:"Nothing selected yet",
+ use:"Usage type",chars:"Number of characters",img:"Example image",
+ personal:"Personal",comm:"Commercial x2",
+ rvh:"Customer reviews",name:"Your name",anon:"Stay anonymous",msg:"Write a message (optional)",att:"Attach commission image (optional)",send:"Submit review",
+ tags:["On time","Fast reply","No problems","Impressed"],needStar:"Please pick a star rating",thanks:"Thank you for your review! ",noRv:"No reviews yet",anonN:"Anonymous",
+ sec:{rc:"Rough sketch + Color",bw:"B/W Sketch",fr:"Full render (lined)",ad:"Add-ons"},
+ sz:["Chibi half body","Chibi full body","Head–shoulders","Head–chest","Half body","Full body"],
+ add:["Simple background e.g. flowers, plain room","Complex background e.g. sea, buildings, furnished room","Character with wings","With pet"],cur:"$",del:"Delete",avh:"Pick a profile",swipe:"Swipe for more"}};
+const P={rc:[150,200,400,700,1000,1500],bw:[120,150,300,400,500,1000],fr:[300,450,1000,1500,2000,3000],ad:[400,1000,500,300]};
+let ADMIN=false,lang="th",sel={base:null,ad:new Set(),chars:1,comm:false},cfg={home:[],rev:[],gal:[],types:{}},db=null,owner=false,star=0,revFile=null;
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const t=k=>T[lang][k];
+const money=n=>lang==="th"?"฿"+n.toLocaleString():"$"+(n/RATE).toFixed(2).replace(/\.00$/,"");
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const url=id=>"/_blob/"+id;
+
+(function(){if(matchMedia("(prefers-reduced-motion:reduce)").matches)return;const w=$("#petals");for(let i=0;i<14;i++){const e=document.createElementNS("http://www.w3.org/2000/svg","svg"),z=14+Math.random()*16;e.setAttribute("class","p");e.setAttribute("width",z);e.setAttribute("height",z);e.setAttribute("viewBox","-50 -50 100 100");e.innerHTML='<use href="#sk"/>';const st=e.style;st.left=Math.random()*100+"%";st.animationDuration=12+Math.random()*14+"s";st.animationDelay=-Math.random()*20+"s";st.setProperty("--dx",(Math.random()*160-80)+"px");st.setProperty("--r",(Math.random()*720-360)+"deg");w.appendChild(e)}})();
+// nav
+const tabs=["home","detail","types","gal","rev"],ALL=[...tabs,"admin"];
+function go(n){ALL.forEach((k,i)=>{$("#p-"+k).classList.toggle("on",k===n);if($("#nav").children[i])$("#nav").children[i].classList.toggle("on",k===n)});scrollTo({top:0,behavior:"smooth"});history.replaceState(null,"","#"+n)}
+$("#nav").innerHTML=tabs.map(k=>`<button data-k="${k}"></button>`).join("");
+$("#nav").onclick=e=>{if(e.target.dataset.k)go(e.target.dataset.k)};
+
+// language
+$$(".lang button").forEach(b=>b.onclick=()=>{lang=b.dataset.l;$$(".lang button").forEach(x=>x.classList.toggle("on",x===b));document.documentElement.lang=lang;try{localStorage.setItem("lang",lang)}catch(e){}renderAll()});
+
+function sliderHTML(ids,key){
+ if(!ids.length)return `<div class="ph">${t("empty")}</div>`;
+ const im=ids.map(i=>`<img src="${url(i)}" alt="" loading="lazy">`).join("");
+ const rep=ids.length<4?Math.ceil(8/ids.length):2;
+ const half=Array(Math.max(1,Math.ceil(rep/2))).fill(im).join("");
+ return `<div class="track" style="--d:${Math.max(15,ids.length*7)}s">${half}${half}</div>`}
+function renderGal(){$("#gal").innerHTML=cfg.gal.length?`<div class="gg">${cfg.gal.map(i=>`<img src="${url(i)}" alt="" loading="lazy">`).join("")}</div>`:`<div class="ph">${t("empty")}</div>`}
+function renderSliders(){renderGal();$("#s-home").innerHTML=sliderHTML(cfg.home);$("#s-rev").innerHTML=sliderHTML(cfg.rev)}
+
+// commission options
+function renderOpts(){
+ const box=$("#opts");let h="";
+ h+=`<div class="card"><h3>${t("use")}</h3>`+[[false,t("personal")],[true,t("comm")]].map(([v,l])=>`<label class="opt ${sel.comm===v?"sel":""}"><span><input type="radio" name="use" data-use="${v}" ${sel.comm===v?"checked":""}>${l}</span></label>`).join("")+`</div>`;
+ ["rc","bw","fr"].forEach(k=>{h+=`<div class="card"><h3>${t("sec")[k]}</h3>${exImg(k)}`+P[k].map((p,i)=>{const on=sel.base&&sel.base.k===k&&sel.base.i===i;return `<label class="opt ${on?"sel":""}"><span><input type="checkbox" data-b="${k}:${i}" ${on?"checked":""}>${t("sz")[i]}</span><b>${money(p)}</b></label>`}).join("")+`</div>`});
+ h+=`<div class="card"><h3>${t("sec").ad}</h3>${exImg("ad")}`+P.ad.map((p,i)=>`<label class="opt ${sel.ad.has(i)?"sel":""}"><span><input type="checkbox" data-a="${i}" ${sel.ad.has(i)?"checked":""}>${t("add")[i]}</span><b>${money(p)}</b></label>`).join("")+`</div>`;
+ h+=`<div class="card"><h3>${t("chars")}</h3>`+[1,2,3,4].map(n=>`<label class="opt ${sel.chars===n?"sel":""}"><span><input type="radio" name="ch" data-c="${n}" ${sel.chars===n?"checked":""}>${n}${n>1?" (x"+n+")":""}</span></label>`).join("")+`</div>`;
+ const sc=[...box.querySelectorAll(".car")].map(c=>c.scrollLeft);box.innerHTML=h;box.querySelectorAll(".car").forEach((c,i)=>c.scrollLeft=sc[i]||0);renderRcpt()}
+document.addEventListener("click",e=>{const d=e.target.dataset;if(d&&d.cs){const c=e.target.parentNode.querySelector(".car");c.scrollBy({left:+d.cs*c.clientWidth,behavior:"smooth"})}
+ if(e.target.closest&&e.target.closest("#gal")&&e.target.tagName==="IMG"){$("#lbi").src=e.target.src;$("#lb").style.display="flex"}});
+function typeIds(k){const v=cfg.types[k];return Array.isArray(v)?v:v?[v]:[]}
+function exImg(k){const ids=typeIds(k);return ids.length?`<div class="cw"><div class="car">${ids.map(i=>`<img src="${url(i)}" alt="" loading="lazy">`).join("")}</div>${ids.length>1?'<button class="cb l" data-cs="-1" aria-label="prev">&#8249;</button><button class="cb r" data-cs="1" aria-label="next">&#8250;</button>':""}</div>${ids.length>1?`<div class="note" style="text-align:center;margin-bottom:6px">${t("swipe")}</div>`:""}`:`<div class="exph">${t("img")}</div>`}
+$("#opts").addEventListener("change",e=>{const d=e.target.dataset;
+ if(d.use!==undefined)sel.comm=d.use==="true";
+ if(d.b){const[k,i]=d.b.split(":");sel.base=e.target.checked?{k,i:+i}:null}
+ if(d.a!==undefined){e.target.checked?sel.ad.add(+d.a):sel.ad.delete(+d.a)}
+ if(d.c)sel.chars=+d.c;
+ if(d.up)return;
+ renderOpts()});
+$("#reset").onclick=()=>{sel={base:null,ad:new Set(),chars:1,comm:false};renderOpts()};
+function renderRcpt(){
+ const rows=[];let base=0,ad=0;
+ if(sel.base){base=P[sel.base.k][sel.base.i];rows.push([t("sec")[sel.base.k]+" · "+t("sz")[sel.base.i]+(sel.chars>1?" x"+sel.chars:""),base*sel.chars])}
+ [...sel.ad].sort().forEach(i=>{ad+=P.ad[i];rows.push([t("add")[i],P.ad[i]])});
+ if(sel.comm)rows.push([t("comm"),null]);
+ const total=(base*sel.chars+ad)*(sel.comm?2:1);
+ $("#rcpt").innerHTML=rows.length?rows.map(r=>`<div class="row"><span>${esc(r[0])}</span><span>${r[1]==null?"":money(r[1])}</span></div>`).join(""):`<small>${t("none")}</small>`;
+ $("#tot").textContent=money(total)}
+
+// static text
+const PAY=["PromptPay","K-Bank","TrueWallet","Alipay","PayPal"];let EMAIL="cms.asamiss@gmail.com";
+function renderText(){
+ $("#payL").innerHTML=PAY.map(x=>`<span>${esc(x)}</span>`).join("");$("#em").textContent=EMAIL;$("#em").href="mailto:"+EMAIL;
+ $$("[data-t]").forEach(e=>{const v=t(e.dataset.t);if(typeof v==="string")e.textContent=v});
+ $$("[data-p]").forEach(e=>e.placeholder=t(e.dataset.p));
+ $("#nav").querySelectorAll("button").forEach((b,i)=>b.textContent=t("nav")[i]);
+ $("#tosL").innerHTML=t("tosL").map(x=>`<li>${esc(x)}</li>`).join("");
+ $("#stepL").innerHTML=t("stepL").map(x=>`<li>${esc(x)}</li>`).join("");
+ $("#tags").innerHTML=t("tags").map((x,i)=>`<label class="chip"><input type="checkbox" value="${i}">${x}</label>`).join("")}
+
+// reviews
+$("#st").onclick=e=>{const i=[...$("#st").children].indexOf(e.target);if(i<0)return;star=i+1;[...$("#st").children].forEach((b,j)=>b.classList.toggle("on",j<star))};
+$("#ra").onchange=e=>{$("#rn").disabled=e.target.checked};
+$("#rf").onchange=async e=>{const f=e.target.files[0];if(!f)return;revFile=await shrink(f,520);$("#rfn").textContent=f.name};
+function shrink(f,max){return new Promise(res=>{const im=new Image();im.onload=()=>{const r=Math.min(1,max/Math.max(im.width,im.height)),c=document.createElement("canvas");c.width=im.width*r;c.height=im.height*r;c.getContext("2d").drawImage(im,0,0,c.width,c.height);res(c.toDataURL("image/jpeg",.6))};im.src=URL.createObjectURL(f)})}
+$("#rs").onclick=async()=>{
+ if(!star){$("#rm").textContent=t("needStar");return}
+ const rec={name:$("#ra").checked?"":$("#rn").value.trim(),anon:$("#ra").checked,stars:star,tags:$$("#tags input:checked").map(x=>+x.value),text:$("#rt").value.trim(),av:avSel,img:revFile||"",ts:Date.now()};
+ try{if(!db)throw 0;await db.collection("reviews").add(rec);$("#rm").textContent=t("thanks");$("#rt").value="";$("#rn").value="";star=0;revFile=null;$("#rfn").textContent="";$$("#st b").forEach(b=>b.classList.remove("on"));$$("#tags input").forEach(x=>x.checked=false)}
+ catch(e){$("#rm").textContent=""+(db?"error":"Please sign in to claude.ai to post")}};
+let avSel="🐱";const AV=["🐱","🐶","🐰","🐻","🦊","🐼","🐨","🐹","🐥","🐧","🦄","🐸"];
+$("#av").innerHTML=AV.map(a=>`<button type="button" data-a="${a}" class="${a===avSel?"on":""}">${a}</button>`).join("");
+$("#av").onclick=e=>{const a=e.target.dataset.a;if(!a)return;avSel=a;$$("#av button").forEach(b=>b.classList.toggle("on",b.dataset.a===a))};
+let revs=[];
+function renderRevs(){
+ $("#rlist").innerHTML=revs.length?revs.map(r=>`<div class="card rv"><div style="display:flex;gap:10px;align-items:center"><div class="avt">${AV.includes(r.av)?r.av:"🐾"}</div><div><b>${esc(r.anon||!r.name?t("anonN"):r.name)}</b><div style="color:#f4b942">${"★".repeat(r.stars)}<span style="color:#ddc">${"★".repeat(5-r.stars)}</span></div></div></div><div class="tg">${(r.tags||[]).map(i=>`<span>${t("tags")[i]}</span>`).join("")}</div>${r.text?`<p>${esc(r.text)}</p>`:""}${r.img&&r.img.startsWith("data:image/")?`<img src="${r.img}" alt="">`:""}${owner?`<button class="btn sec" style="padding:2px 12px;font-size:12px" data-del="${r.id}">${t("del")}</button>`:""}</div>`).join(""):`<p class="note" style="text-align:center">${t("noRv")}</p>`}
+$("#rlist").onclick=async e=>{const id=e.target.dataset.del;if(id&&db)try{await db.doc("reviews/"+id).delete()}catch(x){}};
+
+// owner uploads
+document.addEventListener("change",e=>{const d=e.target.dataset;if(d&&d.up&&!d.b)upload(e.target,d.up)});
+async function upload(inp,key){
+ const m=$("#am");let assets=null;try{assets=await claude.use("assets")}catch(e){}
+ if(!assets||!db){m.textContent="Upload failed: sign in to claude.ai as the page owner / อัปโหลดไม่สำเร็จ ต้องล็อกอินเจ้าของเพจ";inp.value="";return}
+ m.textContent="Uploading...";const ids=[];for(const f of inp.files){try{ids.push((await assets.upload(await shrinkBlob(f))).id)}catch(x){}}
+ const n={...cfg,types:{...cfg.types}};
+ if(key.startsWith("type:")){const k=key.slice(5);n.types[k]=[...typeIds(k),...ids]}else n[key]=[...(cfg[key]||[]),...ids];
+ try{await db.doc("site/config").set(n);m.textContent="Done / เรียบร้อย"}catch(e){m.textContent="Save failed / บันทึกไม่สำเร็จ"}inp.value=""}
+function shrinkBlob(f){return new Promise(res=>{const im=new Image();im.onload=()=>{const r=Math.min(1,1400/Math.max(im.width,im.height)),c=document.createElement("canvas");c.width=im.width*r;c.height=im.height*r;c.getContext("2d").drawImage(im,0,0,c.width,c.height);c.toBlob(res,"image/jpeg",.85)};im.src=URL.createObjectURL(f)})}
+$$("[data-clear]").forEach(b=>b.onclick=async()=>{if(db)await db.doc("site/config").set({...cfg,[b.dataset.clear]:[]})});
+
+function renderAll(){renderText();renderSliders();renderOpts();renderRevs()}
+try{const l=localStorage.getItem("lang");if(l==="en"){lang="en";$$(".lang button").forEach(b=>b.classList.toggle("on",b.dataset.l==="en"))}}catch(e){}
+renderAll();go(ALL.includes(location.hash.slice(1))?location.hash.slice(1):"home");
+
+// admin
+const HASH="b928a82160081bea405c201c885032e36ac9ccae771dc65fd37a0d29f96cdabb";
+async function sha(x){const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(x));return [...new Uint8Array(b)].map(v=>v.toString(16).padStart(2,"0")).join("")}
+function setAdmin(v){ADMIN=v;owner=v;document.body.classList.toggle("isown",v);$("#login").style.display=v?"none":"";$("#editor").style.display=v?"":"none";try{sessionStorage.setItem("adm",v?"1":"")}catch(e){}if(v)fillAdmin();renderOpts();renderRevs()}
+const L=a=>a.join("\n"),lines=x=>x.split("\n").map(v=>v.trim()).filter(Boolean);
+function renderAI(){
+ const G=[["home","Home slides / สไลด์หน้าแรก"],["rev","Review slides / สไลด์รีวิว"],["gal","Portfolio gallery / ตัวอย่างผลงาน"],...["rc","bw","fr","ad"].map(k=>["type:"+k,"Examples / ตัวอย่าง: "+T.th.sec[k]])];
+ $("#ai").innerHTML=G.map(([k,l])=>{const ids=k.startsWith("type:")?typeIds(k.slice(5)):(cfg[k]||[]);return `<div style="margin-bottom:14px"><b>${l}</b><div>${ids.map(i=>`<span class="th"><img src="${url(i)}" alt=""><button data-k="${k}" data-id="${i}">x</button></span>`).join("")}</div><label class="btn sec">+ Add images / เพิ่มรูป<input type="file" accept="image/*" multiple hidden data-up="${k}"></label></div>`}).join("")}
+$("#ai").onclick=async e=>{const k=e.target.dataset.k,id=e.target.dataset.id;if(!k||!db)return;const n={...cfg,types:{...cfg.types}};
+ if(k.startsWith("type:")){const kk=k.slice(5);n.types[kk]=typeIds(kk).filter(x=>x!==id)}else n[k]=(cfg[k]||[]).filter(x=>x!==id);
+ try{await db.doc("site/config").set(n);(await claude.use("assets")).delete(id)}catch(x){$("#am").textContent="Failed / ไม่สำเร็จ"}};
+function fillAdmin(){renderAI();
+ $("#ae").value=EMAIL;$("#a1").value=L(T.th.tosL);$("#a2").value=L(T.en.tosL);$("#a3").value=L(T.th.stepL);$("#a4").value=L(T.en.stepL);$("#a5").value=L(PAY);
+ $("#ap").innerHTML=["rc","bw","fr","ad"].map(k=>`<h3>${T.th.sec[k]}</h3><div class="g">`+P[k].map((p,i)=>`<span>${k==="ad"?T.th.add[i]:T.th.sz[i]}</span><input type="number" min="0" data-pk="${k}:${i}" value="${p}">`).join("")+"</div>").join("")}
+$("#adm").onclick=e=>{e.preventDefault();go("admin")};$("#bk").onclick=()=>go("home");
+$("#lg").onclick=async()=>{if(await sha($("#pw").value)===HASH){$("#pw").value="";$("#lm").textContent="";setAdmin(true)}else $("#lm").textContent="Wrong password / รหัสไม่ถูกต้อง"};
+$("#pw").onkeydown=e=>{if(e.key==="Enter")$("#lg").click()};
+$("#lo").onclick=()=>{setAdmin(false);go("home")};
+$("#sv").onclick=async()=>{
+ const prices={};$$("[data-pk]").forEach(x=>{const[k,i]=x.dataset.pk.split(":");(prices[k]=prices[k]||[])[+i]=Math.max(0,+x.value||0)});
+ const content={email:$("#ae").value.trim()||EMAIL,tos_th:lines($("#a1").value),tos_en:lines($("#a2").value),steps_th:lines($("#a3").value),steps_en:lines($("#a4").value),pay:lines($("#a5").value),prices};
+ try{if(!db)throw 0;await db.doc("site/config").set({...cfg,content});$("#am").textContent="Saved / บันทึกแล้ว"}catch(e){$("#am").textContent="Save failed: sign in to claude.ai as the page owner / บันทึกไม่สำเร็จ ต้องล็อกอินเจ้าของเพจ"}};
+function applyContent(c){
+ if(!c)return;
+ if(c.email)EMAIL=c.email;if(c.tos_th&&c.tos_th.length)T.th.tosL=c.tos_th;if(c.tos_en&&c.tos_en.length)T.en.tosL=c.tos_en;
+ if(c.steps_th&&c.steps_th.length)T.th.stepL=c.steps_th;if(c.steps_en&&c.steps_en.length)T.en.stepL=c.steps_en;
+ if(c.pay&&c.pay.length)PAY.splice(0,PAY.length,...c.pay);
+ if(c.prices)for(const k in P)if(Array.isArray(c.prices[k])&&c.prices[k].length===P[k].length)P[k]=c.prices[k].map(Number)}
+
+// live data
+(async()=>{
+ try{db=await claude.use("db")}catch(e){}
+ 
+ if(!db){return}
+ db.doc("site/config").onSnapshot(s=>{const d=s.exists?s.data():{};cfg={home:d.home||[],rev:d.rev||[],gal:d.gal||[],types:d.types||{},content:d.content};applyContent(d.content);renderText();renderSliders();renderOpts();if(ADMIN){renderAI();if(!document.activeElement.closest("#editor"))fillAdmin()}},()=>{});
+ db.collection("reviews").orderBy("ts","desc").limit(100).onSnapshot(s=>{revs=s.docs.map(d=>({id:d.id,...d.data()}));renderRevs()},()=>{});
+})();
+</script>
+</body>
+</html>

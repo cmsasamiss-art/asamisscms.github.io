@@ -115,8 +115,9 @@ input[type=text],textarea{width:100%;font:inherit;padding:8px 12px;border-radius
 <section class="page" id="p-gal"><div id="gal"></div></section>
 
 <section class="page" id="p-rev">
+  <div class="card" id="rvl" style="text-align:center"><h2 data-t="rvh"></h2><p class="note" data-t="wrn"></p><a class="btn" id="rvb" target="_blank" rel="noopener" data-t="wr"></a></div>
     <div class="slider" id="s-rev"></div>
-  <div class="card">
+  <div class="card" id="rvf">
     <h2 data-t="rvh"></h2>
     <div class="note" data-t="avh"></div><div class="avs" id="av"></div>
     <input type="text" id="rn" maxlength="40" data-p="name">
@@ -124,8 +125,7 @@ input[type=text],textarea{width:100%;font:inherit;padding:8px 12px;border-radius
     <div class="stars" id="st"><b>★</b><b>★</b><b>★</b><b>★</b><b>★</b></div>
     <div class="chips" id="tags"></div>
     <textarea id="rt" rows="3" maxlength="500" data-p="msg"></textarea>
-    <p><label class="btn sec"><span data-t="att"></span><input type="file" id="rf" accept="image/*" hidden></label> <small id="rfn"></small></p>
-    <button class="btn" id="rs" data-t="send"></button> <small id="rm"></small>
+        <button class="btn" id="rs" data-t="send"></button> <small id="rm"></small>
   </div>
   <div id="rlist"></div>
 </section>
@@ -141,12 +141,35 @@ input[type=text],textarea{width:100%;font:inherit;padding:8px 12px;border-radius
   <p>Steps EN<textarea id="a4" rows="5"></textarea></p>
   <p>Payment methods<textarea id="a5" rows="4"></textarea></p>
   <div id="ap"></div>
+  <div style="display:none"><h3>Google Form (reviews / รีวิว)</h3>
+  <p>Form URL (…/formResponse)<input type="text" id="gf"></p>
+  <p>Entry IDs (entry.123456…): Name / Stars / Tags / Message / Profile</p>
+  <div class="g" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px"><input type="text" id="ge1" placeholder="Name"><input type="text" id="ge2" placeholder="Stars"><input type="text" id="ge3" placeholder="Tags"><input type="text" id="ge4" placeholder="Message"><input type="text" id="ge5" placeholder="Profile"></div>
+  </div>
+  <h3>Reviews / รีวิว</h3>
+  <p>Published CSV URL of the Google Sheet (แสดงเฉพาะแถวที่พิมพ์ yes ในคอลัมน์ Approved)<input type="text" id="gc"></p>
+  <hr style="border:0;border-top:1px solid var(--line);margin:16px 0">
+  <p>GitHub repo (owner/name)<input type="text" id="rp" placeholder="username/repo"></p>
+  <p>GitHub token (fine-grained, Contents: read &amp; write)<input type="password" id="tk"></p>
   <p><button class="btn" id="sv">Save</button> <button class="btn sec" id="lo">Logout</button> <small id="am"></small></p>
  </div>
 </section>
 </main>
 
 <script>
+/* ===== ตั้งค่าตรงนี้ที่เดียว / EDIT HERE ONLY =====
+   ใส่ข้อความในเครื่องหมาย "" ไม่ต้องใส่ก็ได้ (ไปกรอกในหน้า Admin แทนได้) */
+const CONFIG={
+ formUrl:"https://docs.google.com/forms/d/e/1FAIpQLSe81jN3bHgoxsCmpv9Y5Tz5el9KUFEylYJfhRXVc_Vntz2A1w/viewform",        // ลิงก์ Google Form ที่ลงท้าย /viewform หรือ /formResponse
+ entryName:"",      // เช่น entry.111111 (ช่อง Name)
+ entryStars:"",     // เช่น entry.222222 (ช่อง Stars)
+ entryTags:"",      // เช่น entry.333333 (ช่อง Tags)
+ entryMessage:"",   // เช่น entry.444444 (ช่อง Message)
+ entryProfile:"",   // เช่น entry.555555 (ช่อง Profile)
+ csvUrl:"",         // ลิงก์ Published CSV ของ Google Sheet
+ repo:""            // เช่น username/my-repo (เว้นว่างได้ ถ้าเป็น username.github.io/repo เดาให้เอง)
+};
+/* ============================================== */
 const RATE=33; // 1 USD ≈ 33 THB (แก้ตัวเลขนี้ได้)
 const T={th:{
  nav:["หน้าแรก","รายละเอียด","ประเภทคอมมิชชั่น","ตัวอย่างผลงาน","รีวิว"],contact:"ติดต่อ:",l1:"ช่องทางการติดตามผลงาน",l2:"สถานะคิว",l3:"ตัวอย่างแบบฟอร์ม Brief Commission",
@@ -157,11 +180,11 @@ const T={th:{
  calc:"คำนวณราคา",total:"ราคารวม",reset:"ยกเลิกที่เลือกทั้งหมด",note:"ราคานี้เป็นเพียงการคำนวณคร่าวๆ โปรดสอบถามราคาจากนักวาดอีกครั้ง",none:"ยังไม่ได้เลือก",
  use:"ประเภทการใช้งาน",chars:"จำนวนตัวละคร",img:"ภาพตัวอย่าง",
  personal:"ส่วนตัว",comm:"เชิงพาณิชย์ x2",
- rvh:"รีวิวจากลูกค้า",name:"ชื่อของคุณ",anon:"ไม่ต้องการระบุชื่อ",msg:"เขียนข้อความประทับใจ (ไม่บังคับ)",att:"แนบรูปคอมมิชชั่น (ไม่บังคับ)",send:"ส่งรีวิว",
+ rvh:"รีวิวจากลูกค้า",name:"ชื่อของคุณ",anon:"ไม่ต้องการระบุชื่อ",msg:"เขียนข้อความประทับใจ (ไม่บังคับ)",send:"ส่งรีวิว",
  tags:["ส่งงานตรงเวลา","ตอบไว","งานไม่มีปัญหา","ประทับใจ"],needStar:"กรุณาให้ดาว",thanks:"ขอบคุณสำหรับรีวิวค่ะ",noRv:"ยังไม่มีรีวิว",anonN:"ไม่ระบุชื่อ",
  sec:{rc:"Rough sketch + Color (เส้นรัฟ+สี)",bw:"B/W Sketch (เส้นรัฟขาวดำ)",fr:"Full render (ตัดเส้น)",ad:"Add-on (อื่นๆ)"},
  sz:["จิบิ ครึ่งตัว","จิบิ เต็มตัว","หัว-ไหล่","หัว-อก","ครึ่งตัว","เต็มตัว"],
- add:["พื้นหลังแบบง่าย เช่น ดอกไม้ ฉากในห้องเรียบๆ","พื้นหลังซับซ้อน เช่น ทะเล ตึก ห้องที่มีเฟอร์นิเจอร์เยอะ","ตัวละครมีปีก","มีสัตว์เลี้ยง"],cur:"฿",del:"ลบ",avh:"เลือกโปรไฟล์",swipe:"เลื่อนดูรูปเพิ่มเติม"},
+ add:["พื้นหลังแบบง่าย เช่น ดอกไม้ ฉากในห้องเรียบๆ","พื้นหลังซับซ้อน เช่น ทะเล ตึก ห้องที่มีเฟอร์นิเจอร์เยอะ","ตัวละครมีปีก","มีสัตว์เลี้ยง"],cur:"฿",wr:"เขียนรีวิวผ่าน Google Form",wrn:"กดปุ่มด้านล่างเพื่อกรอกรีวิว รีวิวจะแสดงบนเว็บหลังเจ้าของอนุมัติ",sent:"ส่งรีวิวแล้ว ขอบคุณค่ะ รีวิวจะแสดงบนเว็บหลังเจ้าของอนุมัติ",mailed:"เปิดแอปอีเมลแล้ว กดส่งได้เลย (แนบรูปได้ในอีเมล) เจ้าของจะนำรีวิวขึ้นเว็บให้ค่ะ",del:"ลบ",avh:"เลือกโปรไฟล์",swipe:"เลื่อนดูรูปเพิ่มเติม"},
 en:{
  nav:["Home","Details","Commission Types","Portfolio","Reviews"],contact:"Contact:",l1:"Portfolio & socials",l2:"Queue status",l3:"Commission brief form example",
  addImg:"Add images",clearImg:"Remove all images",empty:"Image area",
@@ -171,18 +194,18 @@ en:{
  calc:"Price calculator",total:"Total",reset:"Clear all selections",note:"This price is only a rough estimate. Please confirm the final price with the artist.",none:"Nothing selected yet",
  use:"Usage type",chars:"Number of characters",img:"Example image",
  personal:"Personal",comm:"Commercial x2",
- rvh:"Customer reviews",name:"Your name",anon:"Stay anonymous",msg:"Write a message (optional)",att:"Attach commission image (optional)",send:"Submit review",
+ rvh:"Customer reviews",name:"Your name",anon:"Stay anonymous",msg:"Write a message (optional)",send:"Submit review",
  tags:["On time","Fast reply","No problems","Impressed"],needStar:"Please pick a star rating",thanks:"Thank you for your review! ",noRv:"No reviews yet",anonN:"Anonymous",
  sec:{rc:"Rough sketch + Color",bw:"B/W Sketch",fr:"Full render (lined)",ad:"Add-ons"},
  sz:["Chibi half body","Chibi full body","Head–shoulders","Head–chest","Half body","Full body"],
- add:["Simple background e.g. flowers, plain room","Complex background e.g. sea, buildings, furnished room","Character with wings","With pet"],cur:"$",del:"Delete",avh:"Pick a profile",swipe:"Swipe for more"}};
+ add:["Simple background e.g. flowers, plain room","Complex background e.g. sea, buildings, furnished room","Character with wings","With pet"],cur:"$",wr:"Write a review (Google Form)",wrn:"Tap the button below to fill in your review. It will appear here once the owner approves it.",sent:"Sent! Thank you. Your review will appear after the owner approves it.",mailed:"Your email app opened. Just hit send (you can attach a photo). The owner will post your review.",del:"Delete",avh:"Pick a profile",swipe:"Swipe for more"}};
 const P={rc:[150,200,400,700,1000,1500],bw:[120,150,300,400,500,1000],fr:[300,450,1000,1500,2000,3000],ad:[400,1000,500,300]};
-let ADMIN=false,lang="th",sel={base:null,ad:new Set(),chars:1,comm:false},cfg={home:[],rev:[],gal:[],types:{}},db=null,owner=false,star=0,revFile=null;
+let ADMIN=false,lang="th",sel={base:null,ad:new Set(),chars:1,comm:false},cfg={home:[],rev:[],gal:[],types:{},reviews:[]},db=null,owner=false,star=0,revFile=null;
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const t=k=>T[lang][k];
 const money=n=>lang==="th"?"฿"+n.toLocaleString():"$"+(n/RATE).toFixed(2).replace(/\.00$/,"");
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-const url=id=>"/_blob/"+id;
+const url=p=>p;
 
 (function(){if(matchMedia("(prefers-reduced-motion:reduce)").matches)return;const w=$("#petals");for(let i=0;i<14;i++){const e=document.createElementNS("http://www.w3.org/2000/svg","svg"),z=14+Math.random()*16;e.setAttribute("class","p");e.setAttribute("width",z);e.setAttribute("height",z);e.setAttribute("viewBox","-50 -50 100 100");e.innerHTML='<use href="#sk"/>';const st=e.style;st.left=Math.random()*100+"%";st.animationDuration=12+Math.random()*14+"s";st.animationDelay=-Math.random()*20+"s";st.setProperty("--dx",(Math.random()*160-80)+"px");st.setProperty("--r",(Math.random()*720-360)+"deg");w.appendChild(e)}})();
 // nav
@@ -246,30 +269,39 @@ function renderText(){
 // reviews
 $("#st").onclick=e=>{const i=[...$("#st").children].indexOf(e.target);if(i<0)return;star=i+1;[...$("#st").children].forEach((b,j)=>b.classList.toggle("on",j<star))};
 $("#ra").onchange=e=>{$("#rn").disabled=e.target.checked};
-$("#rf").onchange=async e=>{const f=e.target.files[0];if(!f)return;revFile=await shrink(f,520);$("#rfn").textContent=f.name};
-function shrink(f,max){return new Promise(res=>{const im=new Image();im.onload=()=>{const r=Math.min(1,max/Math.max(im.width,im.height)),c=document.createElement("canvas");c.width=im.width*r;c.height=im.height*r;c.getContext("2d").drawImage(im,0,0,c.width,c.height);res(c.toDataURL("image/jpeg",.6))};im.src=URL.createObjectURL(f)})}
+function shrink(f,max,q=.6){return new Promise(res=>{const im=new Image();im.onload=()=>{const r=Math.min(1,max/Math.max(im.width,im.height)),c=document.createElement("canvas");c.width=im.width*r;c.height=im.height*r;c.getContext("2d").drawImage(im,0,0,c.width,c.height);res(c.toDataURL("image/jpeg",q))};im.src=URL.createObjectURL(f)})}
 $("#rs").onclick=async()=>{
  if(!star){$("#rm").textContent=t("needStar");return}
- const rec={name:$("#ra").checked?"":$("#rn").value.trim(),anon:$("#ra").checked,stars:star,tags:$$("#tags input:checked").map(x=>+x.value),text:$("#rt").value.trim(),av:avSel,img:revFile||"",ts:Date.now()};
- try{if(!db)throw 0;await db.collection("reviews").add(rec);$("#rm").textContent=t("thanks");$("#rt").value="";$("#rn").value="";star=0;revFile=null;$("#rfn").textContent="";$$("#st b").forEach(b=>b.classList.remove("on"));$$("#tags input").forEach(x=>x.checked=false)}
- catch(e){$("#rm").textContent=""+(db?"error":"Please sign in to claude.ai to post")}};
+ const rec={name:$("#ra").checked?"":$("#rn").value.trim(),anon:$("#ra").checked,stars:star,tags:$$("#tags input:checked").map(x=>+x.value),text:$("#rt").value.trim(),av:avSel,ts:Date.now(),img:""};
+ if(ADMIN){try{keep();$("#rm").textContent="...";if(revFile){const p="img/rv-"+rec.ts+".jpg";await ghPut(p,revFile.split(",")[1],"add review image");rec.img=p}
+  cfg.reviews=[...(cfg.reviews||[]),rec];await saveData();applyCfg(cfg);$("#rm").textContent=t("thanks")}catch(e){$("#rm").textContent="Failed: "+e.message}return}
+ const nm=rec.anon||!rec.name?t("anonN"):rec.name;
+
+ if(G.url){try{const p=new URLSearchParams(),set=(k,v)=>{if(G[k])p.append(G[k],v)};set("name",nm);set("stars",String(star));set("tags",rec.tags.map(i=>T.th.tags[i]).join(", "));set("msg",rec.text);set("av",avSel);
+  await fetch(G.url,{method:"POST",mode:"no-cors",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:p});
+  $("#rm").textContent=t("sent");$("#rt").value="";$("#rn").value="";star=0;$$("#st b").forEach(b=>b.classList.remove("on"));$$("#tags input").forEach(x=>x.checked=false)}catch(e){$("#rm").textContent="Failed"}return}
+ const body=`${nm} ${avSel}\n${"★".repeat(star)}${"☆".repeat(5-star)}\n${rec.tags.map(i=>t("tags")[i]).join(", ")}\n\n${rec.text}`;
+ location.href="mailto:"+EMAIL+"?subject="+encodeURIComponent("Review - "+nm)+"&body="+encodeURIComponent(body);
+ $("#rm").textContent=t("mailed")};
 let avSel="🐱";const AV=["🐱","🐶","🐰","🐻","🦊","🐼","🐨","🐹","🐥","🐧","🦄","🐸"];
 $("#av").innerHTML=AV.map(a=>`<button type="button" data-a="${a}" class="${a===avSel?"on":""}">${a}</button>`).join("");
 $("#av").onclick=e=>{const a=e.target.dataset.a;if(!a)return;avSel=a;$$("#av button").forEach(b=>b.classList.toggle("on",b.dataset.a===a))};
 let revs=[];
 function renderRevs(){
- $("#rlist").innerHTML=revs.length?revs.map(r=>`<div class="card rv"><div style="display:flex;gap:10px;align-items:center"><div class="avt">${AV.includes(r.av)?r.av:"🐾"}</div><div><b>${esc(r.anon||!r.name?t("anonN"):r.name)}</b><div style="color:#f4b942">${"★".repeat(r.stars)}<span style="color:#ddc">${"★".repeat(5-r.stars)}</span></div></div></div><div class="tg">${(r.tags||[]).map(i=>`<span>${t("tags")[i]}</span>`).join("")}</div>${r.text?`<p>${esc(r.text)}</p>`:""}${r.img&&r.img.startsWith("data:image/")?`<img src="${r.img}" alt="">`:""}${owner?`<button class="btn sec" style="padding:2px 12px;font-size:12px" data-del="${r.id}">${t("del")}</button>`:""}</div>`).join(""):`<p class="note" style="text-align:center">${t("noRv")}</p>`}
-$("#rlist").onclick=async e=>{const id=e.target.dataset.del;if(id&&db)try{await db.doc("reviews/"+id).delete()}catch(x){}};
+ $("#rvf").style.display=ADMIN?"":"none";$("#rvl").style.display=ADMIN?"none":"";$("#rvb").href=CONFIG.formUrl.replace(/\/(viewform|formResponse).*$/,"/viewform");
+ $("#rlist").innerHTML=revs.length?revs.map(r=>`<div class="card rv"><div style="display:flex;gap:10px;align-items:center"><div class="avt">${AV.includes(r.av)?r.av:"🐾"}</div><div><b>${esc(r.anon||!r.name?t("anonN"):r.name)}</b><div style="color:#f4b942">${"★".repeat(r.stars)}<span style="color:#ddc">${"★".repeat(5-r.stars)}</span></div></div></div><div class="tg">${(r.tags||[]).map(i=>`<span>${t("tags")[i]}</span>`).join("")}${(r.tagsTxt||[]).map(x=>`<span>${esc(x)}</span>`).join("")}</div>${r.text?`<p>${esc(r.text)}</p>`:""}${r.img&&(r.img.startsWith("data:image/")||r.img.startsWith("img/"))?`<img src="${r.img}" alt="">`:""}${owner&&!r.csv?`<button class="btn sec" style="padding:2px 12px;font-size:12px" data-del="${r.id}">${t("del")}</button>`:""}</div>`).join(""):`<p class="note" style="text-align:center">${t("noRv")}</p>`}
+$("#rlist").onclick=async e=>{const id=e.target.dataset.del;if(!id)return;keep();try{cfg.reviews=cfg.reviews.filter(r=>String(r.ts)!==id);await saveData();applyCfg(cfg)}catch(x){$("#rm").textContent="Failed"}};
 
 // owner uploads
 document.addEventListener("change",e=>{const d=e.target.dataset;if(d&&d.up&&!d.b)upload(e.target,d.up)});
 async function upload(inp,key){
- const m=$("#am");let assets=null;try{assets=await claude.use("assets")}catch(e){}
- if(!assets||!db){m.textContent="Upload failed: sign in to claude.ai as the page owner / อัปโหลดไม่สำเร็จ ต้องล็อกอินเจ้าของเพจ";inp.value="";return}
- m.textContent="Uploading...";const ids=[];for(const f of inp.files){try{ids.push((await assets.upload(await shrinkBlob(f))).id)}catch(x){}}
- const n={...cfg,types:{...cfg.types}};
- if(key.startsWith("type:")){const k=key.slice(5);n.types[k]=[...typeIds(k),...ids]}else n[key]=[...(cfg[key]||[]),...ids];
- try{await db.doc("site/config").set(n);m.textContent="Done / เรียบร้อย"}catch(e){m.textContent="Save failed / บันทึกไม่สำเร็จ"}inp.value=""}
+ const m=$("#am");keep();if(!LS.get("gh_tk")){m.textContent="Add GitHub token first / ใส่ GitHub token ก่อน";inp.value="";return}
+ m.textContent="Uploading...";const ids=[];let i=0;
+ try{for(const f of inp.files){const d=await shrink(f,1600,.85);const p="img/"+Date.now()+"-"+(i++)+".jpg";await ghPut(p,d.split(",")[1],"add image");ids.push(p)}
+  const n={...cfg,types:{...cfg.types}};
+  if(key.startsWith("type:")){const k=key.slice(5);n.types[k]=[...typeIds(k),...ids]}else n[key]=[...(cfg[key]||[]),...ids];
+  cfg=n;await saveData();m.textContent="Done / เรียบร้อย (เว็บอัปเดตใน ~1 นาที)";renderAI();renderSliders();renderOpts()}catch(e){m.textContent="Failed / ไม่สำเร็จ: "+e.message}
+ inp.value=""}
 function shrinkBlob(f){return new Promise(res=>{const im=new Image();im.onload=()=>{const r=Math.min(1,1400/Math.max(im.width,im.height)),c=document.createElement("canvas");c.width=im.width*r;c.height=im.height*r;c.getContext("2d").drawImage(im,0,0,c.width,c.height);c.toBlob(res,"image/jpeg",.85)};im.src=URL.createObjectURL(f)})}
 $$("[data-clear]").forEach(b=>b.onclick=async()=>{if(db)await db.doc("site/config").set({...cfg,[b.dataset.clear]:[]})});
 
@@ -278,17 +310,32 @@ try{const l=localStorage.getItem("lang");if(l==="en"){lang="en";$$(".lang button
 renderAll();go(ALL.includes(location.hash.slice(1))?location.hash.slice(1):"home");
 
 // admin
+let G=CONFIG.formUrl?{url:CONFIG.formUrl.replace(/\/viewform.*$/,"/formResponse"),name:CONFIG.entryName,stars:CONFIG.entryStars,tags:CONFIG.entryTags,msg:CONFIG.entryMessage,av:CONFIG.entryProfile}:{},CSVURL=CONFIG.csvUrl,csvRevs=[];
+function csvParse(t){const rows=[];let r=[],c="",q=false;for(let i=0;i<t.length;i++){const ch=t[i];if(q){if(ch=='"'){if(t[i+1]=='"'){c+='"';i++}else q=false}else c+=ch}else if(ch=='"')q=true;else if(ch==","){r.push(c);c=""}else if(ch=="\n"){r.push(c);rows.push(r);r=[];c=""}else if(ch!="\r")c+=ch}if(c||r.length){r.push(c);rows.push(r)}return rows}
+async function loadCsv(){if(!CSVURL)return;try{const rows=csvParse(await(await fetch(CSVURL,{cache:"no-store"})).text()),h=rows[0].map(x=>x.trim().toLowerCase()),ix=k=>h.findIndex(x=>x.includes(k));
+ const a=ix("approv"),n=ix("name"),st=ix("star"),tg=ix("tag"),m=ix("message"),p=ix("profile"),ts=Math.max(0,ix("timestamp"));
+ csvRevs=rows.slice(1).filter(r=>a>=0&&/^(yes|y|true|1|ok|approved?)$/i.test((r[a]||"").trim())).map((r,i)=>({csv:1,id:"c"+i,name:r[n]||"",anon:!(r[n]||"").trim(),stars:Math.min(5,Math.max(1,parseInt(r[st])||5)),tagsTxt:(r[tg]||"").split(",").map(x=>x.trim()).filter(Boolean),text:r[m]||"",av:r[p]||"",ts:Date.parse(r[ts])||i}));
+ revs=[...cfg.reviews.map(r=>({...r,id:r.ts})),...csvRevs].sort((a,b)=>b.ts-a.ts);renderRevs()}catch(e){}}
+const LS={get:k=>{try{return localStorage.getItem(k)||""}catch(e){return ""}},set:(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}}};
+function keep(){if($("#rp")&&$("#rp").value.trim()){LS.set("gh_repo",$("#rp").value.trim());LS.set("gh_tk",$("#tk").value.trim())}}
+function repo(){const v=LS.get("gh_repo")||CONFIG.repo;if(v)return v;const h=location.hostname;if(h.endsWith(".github.io")){const p=location.pathname.split("/")[1];return h.split(".")[0]+"/"+(p&&!p.includes(".")?p:h)}return ""}
+function gh(path,opt={}){return fetch(`https://api.github.com/repos/${repo()}/contents/${path}`,{...opt,headers:{Authorization:"Bearer "+LS.get("gh_tk"),Accept:"application/vnd.github+json"}})}
+async function ghPut(path,b64,msg){let sha;const g=await gh(path+"?t="+Date.now());if(g.ok)sha=(await g.json()).sha;const r=await gh(path,{method:"PUT",body:JSON.stringify({message:msg,content:b64,sha})});if(!r.ok)throw new Error("GitHub "+r.status)}
+const b64u=x=>{let b="";new TextEncoder().encode(x).forEach(c=>b+=String.fromCharCode(c));return btoa(b)};
+const saveData=()=>ghPut("data.json",b64u(JSON.stringify(cfg,null,1)),"update site data");
+function applyCfg(d){d=d||{};cfg={home:d.home||[],rev:d.rev||[],gal:d.gal||[],types:d.types||{},content:d.content,reviews:d.reviews||[]};applyContent(d.content);revs=[...cfg.reviews.map(r=>({...r,id:r.ts})),...csvRevs].sort((a,b)=>b.ts-a.ts);renderText();renderSliders();renderOpts();renderRevs();if(ADMIN)renderAI();loadCsv()}
+async function loadFresh(){if(!LS.get("gh_tk")||!repo())return;try{const r=await gh("data.json?t="+Date.now());if(r.ok){const j=await r.json();applyCfg(JSON.parse(new TextDecoder().decode(Uint8Array.from(atob(j.content.replace(/\n/g,"")),c=>c.charCodeAt(0)))));fillAdmin()}}catch(e){}}
 const HASH="b928a82160081bea405c201c885032e36ac9ccae771dc65fd37a0d29f96cdabb";
 async function sha(x){const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(x));return [...new Uint8Array(b)].map(v=>v.toString(16).padStart(2,"0")).join("")}
-function setAdmin(v){ADMIN=v;owner=v;document.body.classList.toggle("isown",v);$("#login").style.display=v?"none":"";$("#editor").style.display=v?"":"none";try{sessionStorage.setItem("adm",v?"1":"")}catch(e){}if(v)fillAdmin();renderOpts();renderRevs()}
+function setAdmin(v){ADMIN=v;owner=v;document.body.classList.toggle("isown",v);$("#login").style.display=v?"none":"";$("#editor").style.display=v?"":"none";try{sessionStorage.setItem("adm",v?"1":"")}catch(e){}if(v){fillAdmin();loadFresh()}renderOpts();renderRevs()}
 const L=a=>a.join("\n"),lines=x=>x.split("\n").map(v=>v.trim()).filter(Boolean);
 function renderAI(){
  const G=[["home","Home slides / สไลด์หน้าแรก"],["rev","Review slides / สไลด์รีวิว"],["gal","Portfolio gallery / ตัวอย่างผลงาน"],...["rc","bw","fr","ad"].map(k=>["type:"+k,"Examples / ตัวอย่าง: "+T.th.sec[k]])];
  $("#ai").innerHTML=G.map(([k,l])=>{const ids=k.startsWith("type:")?typeIds(k.slice(5)):(cfg[k]||[]);return `<div style="margin-bottom:14px"><b>${l}</b><div>${ids.map(i=>`<span class="th"><img src="${url(i)}" alt=""><button data-k="${k}" data-id="${i}">x</button></span>`).join("")}</div><label class="btn sec">+ Add images / เพิ่มรูป<input type="file" accept="image/*" multiple hidden data-up="${k}"></label></div>`}).join("")}
-$("#ai").onclick=async e=>{const k=e.target.dataset.k,id=e.target.dataset.id;if(!k||!db)return;const n={...cfg,types:{...cfg.types}};
+$("#ai").onclick=async e=>{const k=e.target.dataset.k,id=e.target.dataset.id;if(!k)return;keep();const n={...cfg,types:{...cfg.types}};
  if(k.startsWith("type:")){const kk=k.slice(5);n.types[kk]=typeIds(kk).filter(x=>x!==id)}else n[k]=(cfg[k]||[]).filter(x=>x!==id);
- try{await db.doc("site/config").set(n);(await claude.use("assets")).delete(id)}catch(x){$("#am").textContent="Failed / ไม่สำเร็จ"}};
-function fillAdmin(){renderAI();
+ try{cfg=n;await saveData();renderAI();renderSliders();renderOpts();$("#am").textContent="Done / เรียบร้อย"}catch(x){$("#am").textContent="Failed / ไม่สำเร็จ"}};
+function fillAdmin(){renderAI();$("#gf").value=G.url||"";["name","stars","tags","msg","av"].forEach((k,i)=>$("#ge"+(i+1)).value=G[k]||"");$("#gc").value=CSVURL;$("#rp").value=repo();$("#tk").value=LS.get("gh_tk");
  $("#ae").value=EMAIL;$("#a1").value=L(T.th.tosL);$("#a2").value=L(T.en.tosL);$("#a3").value=L(T.th.stepL);$("#a4").value=L(T.en.stepL);$("#a5").value=L(PAY);
  $("#ap").innerHTML=["rc","bw","fr","ad"].map(k=>`<h3>${T.th.sec[k]}</h3><div class="g">`+P[k].map((p,i)=>`<span>${k==="ad"?T.th.add[i]:T.th.sz[i]}</span><input type="number" min="0" data-pk="${k}:${i}" value="${p}">`).join("")+"</div>").join("")}
 $("#adm").onclick=e=>{e.preventDefault();go("admin")};$("#bk").onclick=()=>go("home");
@@ -297,23 +344,17 @@ $("#pw").onkeydown=e=>{if(e.key==="Enter")$("#lg").click()};
 $("#lo").onclick=()=>{setAdmin(false);go("home")};
 $("#sv").onclick=async()=>{
  const prices={};$$("[data-pk]").forEach(x=>{const[k,i]=x.dataset.pk.split(":");(prices[k]=prices[k]||[])[+i]=Math.max(0,+x.value||0)});
- const content={email:$("#ae").value.trim()||EMAIL,tos_th:lines($("#a1").value),tos_en:lines($("#a2").value),steps_th:lines($("#a3").value),steps_en:lines($("#a4").value),pay:lines($("#a5").value),prices};
- try{if(!db)throw 0;await db.doc("site/config").set({...cfg,content});$("#am").textContent="Saved / บันทึกแล้ว"}catch(e){$("#am").textContent="Save failed: sign in to claude.ai as the page owner / บันทึกไม่สำเร็จ ต้องล็อกอินเจ้าของเพจ"}};
+ const content={email:$("#ae").value.trim()||EMAIL,tos_th:lines($("#a1").value),tos_en:lines($("#a2").value),steps_th:lines($("#a3").value),steps_en:lines($("#a4").value),pay:lines($("#a5").value),prices,gform:{url:$("#gf").value.trim().replace(/\/viewform.*$/,"/formResponse"),...Object.fromEntries(["name","stars","tags","msg","av"].map((k,i)=>[k,$("#ge"+(i+1)).value.trim()]))},csv:$("#gc").value.trim()};
+ keep();try{cfg.content=content;await saveData();applyCfg(cfg);$("#am").textContent="Saved / บันทึกแล้ว (เว็บอัปเดตใน ~1 นาที)"}catch(e){$("#am").textContent="Save failed / บันทึกไม่สำเร็จ: "+e.message}};
 function applyContent(c){
- if(!c)return;
+ if(!c)return;if(c.gform&&c.gform.url)G=c.gform;if(c.csv)CSVURL=c.csv;
  if(c.email)EMAIL=c.email;if(c.tos_th&&c.tos_th.length)T.th.tosL=c.tos_th;if(c.tos_en&&c.tos_en.length)T.en.tosL=c.tos_en;
  if(c.steps_th&&c.steps_th.length)T.th.stepL=c.steps_th;if(c.steps_en&&c.steps_en.length)T.en.stepL=c.steps_en;
  if(c.pay&&c.pay.length)PAY.splice(0,PAY.length,...c.pay);
  if(c.prices)for(const k in P)if(Array.isArray(c.prices[k])&&c.prices[k].length===P[k].length)P[k]=c.prices[k].map(Number)}
 
 // live data
-(async()=>{
- try{db=await claude.use("db")}catch(e){}
- 
- if(!db){return}
- db.doc("site/config").onSnapshot(s=>{const d=s.exists?s.data():{};cfg={home:d.home||[],rev:d.rev||[],gal:d.gal||[],types:d.types||{},content:d.content};applyContent(d.content);renderText();renderSliders();renderOpts();if(ADMIN){renderAI();if(!document.activeElement.closest("#editor"))fillAdmin()}},()=>{});
- db.collection("reviews").orderBy("ts","desc").limit(100).onSnapshot(s=>{revs=s.docs.map(d=>({id:d.id,...d.data()}));renderRevs()},()=>{});
-})();
+fetch("data.json",{cache:"no-store"}).then(r=>r.ok?r.json():{}).catch(()=>({})).then(applyCfg);
 </script>
 </body>
 </html>
